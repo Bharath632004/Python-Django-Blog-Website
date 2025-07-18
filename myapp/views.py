@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from .models import *
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 
 from .models import Comment,Post
 # Create your views here.
@@ -56,8 +58,16 @@ def signin(request):
     return render(request,"signin.html")
 
 def logout(request):
-    auth.logout(request)
-    return redirect('index')
+    if request.method == 'POST':
+        
+        
+        auth.logout(request)
+        messages.info(request,"You have been logged out")
+    
+        return redirect('signin')
+    return render(request="signin.html")
+
+
 
 def blog(request):
     return render(request,"blog.html",{
